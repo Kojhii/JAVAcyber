@@ -3,7 +3,7 @@ package com.ynov.oop;
 import java.util.ArrayList;
 
 public class Game {
-    
+    private String player1Name;
 
     private int turn = 0;
 
@@ -13,7 +13,7 @@ public class Game {
      * - les serveurs représentant la grille de jeu
      */
     public Game(String player1Name, String player2Name) {
-
+        this.player1Name = player1Name;
     }
 
     /**
@@ -28,7 +28,7 @@ public class Game {
      * Retourne le nom du joueur actuel
      */
     public String getCurrentPlayerName() {
-        return "";
+        return player1Name + " ";
     }
 
     /**
