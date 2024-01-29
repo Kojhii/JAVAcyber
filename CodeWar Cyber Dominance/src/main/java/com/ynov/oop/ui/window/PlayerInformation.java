@@ -36,7 +36,7 @@ public class PlayerInformation extends TWindow implements Updatable {
 
     private ArrayList<TWidget> drawResource() {
         ArrayList<TWidget> w = new ArrayList<>();
-        TLabel pp = new ProcessingPowerComponent(this, 0, 1, game.getCurrentPlayerProcessingPower());
+        TLabel pp = new ProcessingPowerComponent(this, 0, 1, game.getCurrentPlayerHashCalcul());
         w.add(pp);
         w.add(new EncryptionKeyComponent(this,pp.getLabel().length() + 3,1, game.getCurrentPlayerEncryptionKey()));
         return w;

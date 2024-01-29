@@ -1,26 +1,39 @@
 package com.ynov.oop;
 
+import com.ynov.oop.player.Player;
+import com.ynov.oop.server.*;
+
 import java.util.ArrayList;
 
 public class Game {
-    private String player1Name;
-
+    private Player actualPlayer;
     private int turn = 0;
+    private Player player1;
+    private Player player2;
+    private ArrayList<Server> listOfServer = new ArrayList<>();
 
-    /**
-     * Initialise toute les informations nécessaire pour la partie:
-     * - les deux joueurs
-     * - les serveurs représentant la grille de jeu
-     */
     public Game(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
+        this.player1 = new Player(player1Name);
+        this.player2 = new Player(player2Name);
+        this.actualPlayer = player1;
+        mapInit();
     }
 
+
+    //Iniatilise la map avec les serveur.
+    public void mapInit(){
+        
+    }
     /**
      * Execute les actions de fin de tour pour le joueur actuel
      * puis passe au tour suivant
     */
     public void endTurn() {
+        if (actualPlayer != player1){
+            actualPlayer = player1;
+        } else {
+            actualPlayer = player2;
+        }
     }
 
 
@@ -28,23 +41,22 @@ public class Game {
      * Retourne le nom du joueur actuel
      */
     public String getCurrentPlayerName() {
-        return player1Name + " ";
+        return actualPlayer.getName();
     }
 
     /**
      * Retourne la puissance de traitement du joueur actuel
      */
-    public int getCurrentPlayerProcessingPower() {
-        return -1;
+    public int getCurrentPlayerHashCalcul() {
+        return actualPlayer.getHashCalcul();
     }
 
     /**
      * Retourne le nombre de clés de chiffrement du joueur actuel
      */
     public int getCurrentPlayerEncryptionKey() {
-        return -1;
-    }
-
+        return actualPlayer.getEncryptionKey();
+    } 
     /**
      * retourne la liste des address ip des serveurs connus du joueur actuel
      */
