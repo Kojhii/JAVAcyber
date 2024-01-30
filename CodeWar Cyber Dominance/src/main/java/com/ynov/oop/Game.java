@@ -19,16 +19,16 @@ public class Game {
         this.player2 = new Player(player2Name);
         this.actualPlayer = player1;
         
-        Server heartServer1 = new HeartServer(50);
-        Server heartServer2 = new HeartServer(50);
-        Server dataServer1 = new DataServer(20);
-        Server dataServer2 = new DataServer(20);
-        Server dataServer3 = new DataServer(20);
-        Server dataServer4 = new DataServer(20);
-        Server dataServer5 = new DataServer(20);
-        Server dataServer6 = new DataServer(20);
-        Server encryptionServer1 = new EncryptionServer(0);
-        Server encryptionServer2 = new EncryptionServer(0);
+        HeartServer heartServer1 = new HeartServer(50);
+        HeartServer heartServer2 = new HeartServer(50);
+        DataServer dataServer1 = new DataServer(20);
+        DataServer dataServer2 = new DataServer(20);
+        DataServer dataServer3 = new DataServer(20);
+        DataServer dataServer4 = new DataServer(20);
+        DataServer dataServer5 = new DataServer(20);
+        DataServer dataServer6 = new DataServer(20);
+        EncryptionServer encryptionServer1 = new EncryptionServer(0);
+        EncryptionServer encryptionServer2 = new EncryptionServer(0);
         //owner
         heartServer1.setOwner(player1);
         heartServer2.setOwner(player2);
@@ -64,6 +64,7 @@ public class Game {
         heartServer2.addConnectedServer(new ArrayList<>(Arrays.asList(dataServer5,dataServer6,encryptionServer2)));
     }
     
+    //function to change the actualplayer at the end of the turn
     public void endTurn() {
         if (actualPlayer != player1){
             actualPlayer = player1;
@@ -72,12 +73,14 @@ public class Game {
         }
     }
 
+    //find server by ip
     public Server getServerByIp(String ip){
         for (Server server : listOfServer) {
             if(server.getIp().equals(ip)){
                 return server;
             }
-            return new Server();
+
+            //return new Server();
         }
         return null;
     }
@@ -127,7 +130,9 @@ public class Game {
      */
     public boolean currentPlayerKnowServer(String ipAddress) {
         Server serverKnow = getServerByIp(ipAddress);
-        if(actualPlayer.getVisibleServer().contains(serverKnow)) return true;
+        if(actualPlayer.getVisibleServer().contains(serverKnow)){ 
+            return true;
+        }
         return false;
     } 
 
@@ -135,8 +140,8 @@ public class Game {
      * Retourne le type du serveur auquel appartient l'adresse ip passée en paramètre
      */
     public String getServerType(String ipAddress) {
-        if(getServerByIp(ipAddress).getClass()==DataServer.class) return "DataServer";
-        else if(getServerByIp(ipAddress).getClass()==HeartServer.class) return "HeartServer";
+        if(getServerByIp(ipAddress) instanceof DataServer) return "DataServer";
+        else if(getServerByIp(ipAddress) instanceof HeartServer) return "HeartServer";
         else {
              return "EncryptionServer";
         }
@@ -182,7 +187,7 @@ public class Game {
             if(server.getIp().equals(ipAddress)){
                 switch (action){
                     case "encrypt":
-                        server.setEncrypted(true);
+                         server.setEncrypted(true);
                         actualPlayer.setEncryptionKey(actualPlayer.getEncryptionKey()-1);
                         actualPlayer.setHashCalcul(actualPlayer.getHashCalcul()-60);;
                         return true;

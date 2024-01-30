@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.ynov.oop.player.Player;
 
 public class Server {
+    //attribut d'un server
     private ArrayList<Server> connectedServer;
     private ArrayList<Player> serverDiscoverPlayers;
     private Player owner;
@@ -21,6 +22,7 @@ public class Server {
         this.connectedServer = new ArrayList<>();
     }
    
+    //getter  --------------------------------------------------------
     public String getIp(){
         return ip;
     }
@@ -49,6 +51,7 @@ public class Server {
 
     }
     
+    //setter -----------------------------------------------------
     public void setEncrypted(boolean True){
         this.isEncrypted = True;
     }

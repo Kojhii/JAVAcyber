@@ -1,5 +1,6 @@
 package com.ynov.oop.server;
 
+//heritage of server
 public class EncryptionServer extends Server{
     private int key;
     

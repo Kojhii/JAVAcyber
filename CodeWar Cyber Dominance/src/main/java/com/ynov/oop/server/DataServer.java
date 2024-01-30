@@ -1,5 +1,7 @@
 package com.ynov.oop.server;
 
+//heritage of server
+
 public class DataServer extends Server{
     private int powerRate;
     

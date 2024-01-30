@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.ynov.oop.server.*;
 
 public class Player {
+    //atribut
     private int hashCalcul;
     private int encryptionKey;
     private String name;
@@ -17,6 +18,7 @@ public class Player {
         this.encryptionKey = 0;
     }
 
+    //getter -------------------------------------------------------
     public String getName(){
         return name;
     }
@@ -34,6 +36,7 @@ public class Player {
         return ownedServers;
     }
 
+    //setter ---------------------------------------------------------------------------
     public void setName(String newname){
         this.name = newname;
     }
