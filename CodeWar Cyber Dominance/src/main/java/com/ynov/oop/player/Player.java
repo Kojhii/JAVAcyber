@@ -43,18 +43,26 @@ public class Player {
     public void setEncryptionKey(int nbEncryptionKey){
         this.encryptionKey = nbEncryptionKey;
     }
-    public void addVisibleServer(ArrayList<Server> server){
-        this.visibleServer.addAll(server);
+    public void addVisibleServer(ArrayList<Server> dataServer2){
+        this.visibleServer.addAll(dataServer2);
     }
-    public void setOwnedServers(ArrayList<Server> newOwnedServer){
-        this.ownedServers = newOwnedServer;
+    public void addOwnedServer(ArrayList<Server> heartServer1){
+        this.ownedServers.addAll(heartServer1);
     }
-
-
+   
     public void getResources(){
         for (Server server : ownedServers) {
-            if()
-                
+            if(server.getClass() == HeartServer.class){
+                this.hashCalcul += 50;
+            } else if(server.getClass() == DataServer.class){
+                this.hashCalcul += 20;
+            } else{
+                if(hashCalcul >= 40) {
+                    this.hashCalcul -= 40;
+                    this.encryptionKey += 1;
+                }
+            }    
         }
     }
 }
+ 

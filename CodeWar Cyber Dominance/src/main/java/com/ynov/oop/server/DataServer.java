@@ -4,10 +4,9 @@ public class DataServer extends Server{
     private int powerRate;
     
     public DataServer(int powerRate){
-        super();        
+        super();
         super.setType("DataServer");
-
-        this.powerRate = 20;
+        this.powerRate = 50;
     }
     public int getPowerRate(){
         return this.powerRate;
@@ -16,6 +15,7 @@ public class DataServer extends Server{
     public void setPowerRate(int powerRate){
         this.powerRate = powerRate;
     }
+
     public int getLabor(){
         return this.powerRate;
     }
