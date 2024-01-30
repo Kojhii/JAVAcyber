@@ -2,9 +2,10 @@ package com.ynov.oop;
 
 import com.ynov.oop.player.Player;
 import com.ynov.oop.server.*;
-import com.ynov.oop.server.DataServer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -34,6 +35,8 @@ public class Game {
         player1.addVisibleServer(new ArrayList<>(List.of(dataServer2,dataServer1,encryptionServer1,heartServer1)));
         player2.addVisibleServer(new ArrayList<>(List.of(dataServer6,dataServer5,encryptionServer2)));
         player1.addOwnedServer(new ArrayList<>(List.of(heartServer1)));
+        player2.addOwnedServer(new ArrayList<>(List.of(heartServer2)));
+
         
 
         //listOfserver
@@ -175,52 +178,66 @@ public class Game {
      * @param action valeur possible: "encrypt", "decrypt", "serverDominance", "networkTrafficAnalysis"
     */
     public boolean executeActionOnServer(String action, String ipAddress) {
-        Player p = actualPlayer;
-        if(action.equals("encrypt")){
-            if(canExecuteActionOnServer(action,ipAddress)){
-                p.setEncryptionKey(p.getEncryptionKey() - 1);
-                p.setHashCalcul(p.getHashCalcul() - 60);
-                return true;
-            }else if(action.equals("decrypt")){
-                if(canExecuteActionOnServer(action,ipAddress)){
-
-                }
-            }else if(action.equals("serverDominance")){
-                if(canExecuteActionOnServer(action,ipAddress)){
-
-                }
-            }else if(action.equals("networkTrafficAnalysis")){
-                if(canExecuteActionOnServer(action,ipAddress)){
-
+        for(Server server : listOfServer){
+            if(server.getIp().equals(ipAddress)){
+                switch (action){
+                    case "encrypt":
+                        server.setEncrypted(true);
+                        actualPlayer.setEncryptionKey(actualPlayer.getEncryptionKey()-1);
+                        actualPlayer.setHashCalcul(actualPlayer.getHashCalcul()-60);;
+                        return true;
+                    case "decrypt":
+                        server.setEncrypted(false);
+                        actualPlayer.setEncryptionKey(actualPlayer.getEncryptionKey()-1);
+                        actualPlayer.setHashCalcul(actualPlayer.getHashCalcul()-40);
+                        return true;
+                    case "serverDominance":
+                        server.setOwner(actualPlayer);
+                        actualPlayer.addOwnedServer(new ArrayList<>(List.of(server)));
+                        actualPlayer.setHashCalcul(actualPlayer.getHashCalcul()-50);
+                        return true;
+                    case "networkTrafficAnalysis":
+                        for(Server serverKnow : server.getConnectedServer()){
+                            if(!actualPlayer.getVisibleServer().contains(serverKnow)){
+                                actualPlayer.addVisibleServer(new ArrayList<>(Collections.singletonList(serverKnow)));
+                            }
+                        }
+                        actualPlayer.setHashCalcul(actualPlayer.getHashCalcul()-40);
+                        return true;
                 }
             }
-        }
-        return false;
-       }
+        }return false;
+    }
 
     /**
      * Vérifie si l'action passée en paramètre peut être exécutée sur le serveur auquel appartient l'adresse ip passée en paramètre
      * @param action valeur possible: "encrypt", "decrypt", "serverDominance", "networkTrafficAnalysis"
      */
     public boolean canExecuteActionOnServer(String action, String ipAddress) {
-        Player p = actualPlayer;
-            if(action.equals("encrypt")){
-                for(Server server: actualPlayer.getOwnedServer()){
-                    if(actualPlayer.getClass().toString()=="test"){
-                        return true;
-                    }
+        for(Server server : listOfServer) {
+            if(server.getIp().equals(ipAddress)){
+                switch (action){
+                    case "encrypt":
+                        if(!actualPlayer.getOwnedServer().contains(server) && !server.getIfEncrypted() && actualPlayer.getHashCalcul() >= 60 && actualPlayer.getEncryptionKey() >= 1){
+                            return true;
+                        }
+                    case "decrypt":
+                        if(!actualPlayer.getOwnedServer().contains(server) && server.getIfEncrypted() && actualPlayer.getHashCalcul() >= 60 && actualPlayer.getEncryptionKey() >= 1){
+                            return true;
+                        }
+                    case "serverDominance":
+                        if(!actualPlayer.getOwnedServer().contains(server) && !server.getIfEncrypted() && actualPlayer.getHashCalcul() >= 50){
+                            return true;
+                        }
+                    case "networkTrafficAnalysis":
+                        if(!currentPlayerHasAnalysedServer(ipAddress) && actualPlayer.getHashCalcul() >= 40){
+                            return true;
+                        }
+                    default:
+                        return false;
                 }
-                    if(p.getHashCalcul()>60 && p.getEncryptionKey()>1){
-                        return true;
-                }
-        }else if(action.equals("decrypt")){
-            return false;
-        }else if(action.equals("serverDominance")){
-            return false;
-        }else if(action.equals("networkTrafficAnalysis")){
-            return false;
+            }
         }
-        
         return false;
     }
 
